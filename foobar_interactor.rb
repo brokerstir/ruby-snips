@@ -33,17 +33,9 @@ class FooBarInteractor
   end
 
   def count_by_digit 
-    counts = {}
-    foos = Array (FooBar.pluck(:random_num))
-
-    (0..(FooBar.maximum("random_num") / 10).floor.to_i).each do |n|
-      counts[n] = 0 ; 
-
-      foos.each do |foo|
-        counts[n] += 1 if (foo / 10).floor == n  
-      end
-    end
-    counts
+    foos = Array (FooBar.pluck(:random_num)) ; counts = {}
+    def floor_it (bar); (bar/10).floor.to_i; end
+    (0..floor_it(foos.max)).each {|n| counts[n] = 0 + (foos.select {|foo| floor_it(foo) == n }).count} ; counts
   end
 
 end
