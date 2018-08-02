@@ -11,13 +11,13 @@ class FooBarInteractor
   end
 
   def debug_foobars
-  	FooBar.all.each do |foo|
+    FooBar.all.each do |foo|
       puts "#{foo.id} - #{foo.random_num}"
     end 
   end
 
   def clear_all_records
-  	FooBar.delete_all
+    FooBar.delete_all
   end
 
   def compare_randoms_to_number(int)
@@ -26,7 +26,7 @@ class FooBarInteractor
       if foo.random_num > int
         bools.push(true)
       else
-      	bools.push(false)
+        bools.push(false)
       end
     end 
     bools
@@ -34,55 +34,14 @@ class FooBarInteractor
 
   def count_by_digit 
     counts = {}
-    
-    zeros = FooBar.where(["random_num >= ? and random_num < ?", 0, 10]).count
-    if zeros > 0
-      counts[0] = zeros
-    end
+    foos = Array (FooBar.pluck(:random_num))
 
-    ones = FooBar.where(["random_num >= ? and random_num < ?", 10, 20]).count
-    if ones > 0
-      counts[1] = ones
-    end
+    (0..(FooBar.maximum("random_num") / 10).floor.to_i).each do |n|
+      counts[n] = 0 ; 
 
-    twos = FooBar.where(["random_num >= ? and random_num < ?", 20, 30]).count
-    if twos > 0
-      counts[2] = twos
-    end
-
-    threes = FooBar.where(["random_num >= ? and random_num < ?", 30, 40]).count
-    if threes > 0
-      counts[3] = threes
-    end
-
-    fours = FooBar.where(["random_num >= ? and random_num < ?", 40, 50]).count
-    if fours > 0
-      counts[4] = fours
-    end
-
-    fives = FooBar.where(["random_num >= ? and random_num < ?", 50, 60]).count
-    if fives > 0
-      counts[5] = fives
-    end
-
-    sixes = FooBar.where(["random_num >= ? and random_num < ?", 60, 70]).count
-    if sixes > 0
-      counts[6] = sixes
-    end
-
-    sevens = FooBar.where(["random_num >= ? and random_num < ?", 70, 80]).count
-    if sevens > 0
-      counts[7] = sevens
-    end
-
-    eights = FooBar.where(["random_num >= ? and random_num < ?", 80, 90]).count
-    if eights > 0
-      counts[8] = eights
-    end
-
-    nines = FooBar.where(["random_num >= ? and random_num < ?", 90, 100]).count
-    if nines > 0
-      counts[9] = nines
+      foos.each do |foo|
+        counts[n] += 1 if (foo / 10).floor == n  
+      end
     end
     counts
   end
