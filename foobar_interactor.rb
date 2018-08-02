@@ -33,7 +33,7 @@ class FooBarInteractor
   end
 
   def count_by_digit 
-    foos = Array (FooBar.pluck(:random_num)) ; counts = {}
+    foos = (FooBar.pluck(:random_num))
     def floor_it (bar); (bar/10).floor.to_i; end
     (0..floor_it(foos.max)).each {|n| counts[n] = 0 + (foos.select {|foo| floor_it(foo) == n }).count} ; counts
   end
